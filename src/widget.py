@@ -9,12 +9,12 @@ def mask_account_card(account_card_info: str) -> str:
     if data_list[0].lower() == "счет":
         for item in data_list:
             if item.isdigit():
-                data_list[-1] = get_mask_account(int(item))
+                data_list[-1] = get_mask_account(item)
         return " ".join(data_list)
     else:
         for item in data_list:
             if item.isdigit():
-                data_list[-1] = get_mask_card_number(int(item))
+                data_list[-1] = get_mask_card_number(item)
         return " ".join(data_list)
 
 
