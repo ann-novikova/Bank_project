@@ -1,4 +1,12 @@
 from src.processing import filter_by_state, sort_by_date
+from src.widget import get_date, mask_account_card
+
+user_finance_info = input()
+print(mask_account_card(user_finance_info))
+
+date = input()
+print(get_date(date))
+
 
 bank_transactions = [
     {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
