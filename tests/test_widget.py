@@ -43,3 +43,7 @@ def test_get_date(date_info, expected):
 def test_get_date_another_format(not_number):
     with pytest.raises(ValueError):
         get_date(not_number)
+
+def test_get_date_empty():
+    with pytest.raises(ValueError):
+        get_date('')
