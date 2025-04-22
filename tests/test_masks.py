@@ -19,13 +19,14 @@ def test_get_mask_card_number(card_number, expected):
 def test_get_mask_card_number_not_standart_lenght(card_number, expected):
     assert get_mask_card_number(card_number) == expected
 
-def test_get_mask_card_number_less_than_10():
+def test_get_mask_card_number_less_than_10(less_than_standart_lenght):
     with pytest.raises(ValueError):
-        assert get_mask_card_number('11')
+        get_mask_card_number(less_than_standart_lenght)
 
-def test_get_mask_card_number_not_number():
-    with pytest.raises(ValueError):
-        assert get_mask_card_number('hello')
+def test_get_mask_card_number_not_number(not_number):
+    with pytest.raises(ValueError) as exc_info:
+        get_mask_card_number(not_number)
+    assert str(exc_info.value) == "Номер должен состоять только из цифр"
 
 
 @pytest.mark.parametrize('account_number, expected', [('73654108430135874305',
@@ -44,10 +45,11 @@ def test_get_mask_account(account_number, expected):
 def test_get_mask_account_not_standart_lenght(account_number, expected):
     assert get_mask_account(account_number) == expected
 
-def test_get_mask_account_less_than_5():
+def test_get_mask_account_less_than_5(less_than_standart_lenght):
     with pytest.raises(ValueError):
-        assert get_mask_account('11')
+        get_mask_account(less_than_standart_lenght)
 
-def test_get_mask_account_not_number():
-    with pytest.raises(ValueError):
-        assert get_mask_account('hello')
+def test_get_mask_account_not_number(not_number):
+    with pytest.raises(ValueError) as exc_info:
+        get_mask_account(not_number)
+        assert str(exc_info.value) == "Номер должен состоять только из цифр"
