@@ -32,6 +32,9 @@ def test_sort_by_date(list_of_bank_transactions, list_of_bank_transactions_sorte
 def test_sort_by_date(list_of_bank_transactions, list_of_bank_transactions_sorted_date):
     assert sort_by_date(list_of_bank_transactions) ==  list_of_bank_transactions_sorted_date
 
+def test_sort_by_date_reverse(list_of_bank_transactions, list_of_bank_transactions_sorted_date_false):
+        assert sort_by_date(list_of_bank_transactions, False) == list_of_bank_transactions_sorted_date_false
+
 def test_sort_by_same_date(list_of_bank_transactions_different_state):
     assert sort_by_date(list_of_bank_transactions_different_state) == [
         {'id': 41428829, 'state': 'ACTIVE', 'date': '2019-07-03T18:35:29.512364'},
