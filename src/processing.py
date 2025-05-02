@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any
+from typing import Any, Union
 
 
 def filter_by_state(list_of_bank_transactions: list[dict[str, Any]], state: str = "EXECUTED") -> list[dict[str, Any]]:
@@ -15,12 +15,23 @@ def filter_by_state(list_of_bank_transactions: list[dict[str, Any]], state: str 
     return executed_transactions
 
 
-def sort_by_date(list_of_bank_transactions: list[dict[str, Any]], reverse: bool = True) -> list[dict[str, Any]]:
+def sort_by_date(list_of_bank_transactions: list[dict[str, Any]], reverse: bool = True) \
+        -> Union[list[dict[str, Any]], str]:
     """Функция принимает информацию о банковских операциях и сортирует по дате (можно указать порядок
     сортировки - True or False)"""
 
-    return sorted(
-        list_of_bank_transactions,
-        key=lambda transaction: datetime.strptime(str(transaction.get("date"))[:10], "%Y-%m-%d"),
-        reverse=reverse,
-    )
+    def date_format(line: dict[str, Any]) -> Any:
+        try:
+            date = datetime.strptime(str(line.get("date", 0))[:10], "%Y-%m-%d")
+            return date
+        except ValueError:
+            "Формат даты не соответствует"
+
+    try:
+        list_sorted = sorted(
+            list_of_bank_transactions, key=lambda transaction: date_format(transaction), reverse=reverse
+        )
+    except TypeError:
+        return "Отсутствует дата"
+
+    return list_sorted
