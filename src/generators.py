@@ -1,8 +1,12 @@
 from typing import Any, Generator
 
 def filter_by_currency(transaction_list: list[dict[str, Any]], currency: str) -> Generator[dict[str, Any]]:
-    return (transaction for transaction in transaction_list if
-            transaction["operationAmount"]['currency']['code'] == currency)
+
+    if any(result:= (transaction for transaction in transaction_list if
+            transaction["operationAmount"]['currency']['code'] == currency)):
+        return result
+    else:
+        return 'Операции по данной валюте отсутствуют'
 
 def transaction_descriptions(transaction_list: list[dict[str, Any]]) -> Generator[str]:
     return (transaction.get('description') for transaction in transaction_list )
