@@ -26,11 +26,13 @@ def test_filter_by_currency_correct(transactions_for_generators):
 
 
 def test_filter_by_not_existing_currency(transactions_for_generators):
-    assert filter_by_currency(transactions_for_generators, "TRY") == "Операции по данной валюте отсутствуют"
+    with pytest.raises(ValueError):
+        filter_by_currency(transactions_for_generators, "TRY")
 
 
 def test_filter_by_currency_empty():
-    assert filter_by_currency([{}], "USD") == "Операции по данной валюте отсутствуют"
+    with pytest.raises(ValueError):
+        filter_by_currency([{}], "USD")
 
 
 def test_transaction_descriptions_correct(transactions_for_generators):

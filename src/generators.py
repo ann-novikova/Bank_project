@@ -1,7 +1,7 @@
-from typing import Any, Generator, Iterator, Union
+from typing import Any, Generator, Iterator
 
 
-def filter_by_currency(transaction_list: list[dict[str, Any]], currency: str) -> Union[Iterator[Any], str]:
+def filter_by_currency(transaction_list: list[dict[str, Any]], currency: str) -> Iterator[Any]:
     """Фильтрует список транзакций по заданной валюте. Возвращает "Операции по данной валюте отсутствуют",
     если транзакции с указанной валютой не найдены."""
 
@@ -21,13 +21,13 @@ def filter_by_currency(transaction_list: list[dict[str, Any]], currency: str) ->
             )
         )
     else:
-        return "Операции по данной валюте отсутствуют"
+        raise ValueError("Операции по данной валюте отсутствуют")
 
 
 def transaction_descriptions(transaction_list: list[dict[str, Any]]) -> Generator[Any | None]:
     """Функция, которая возвращает описание транзаций"""
-
-    return (transaction.get("description") for transaction in transaction_list)
+    for item in transaction_list:
+        yield item.get("description")
 
 
 def card_number_generator(start: int, stop: int) -> Generator[str]:
