@@ -1,9 +1,11 @@
+from typing import Any
+
 import pytest
 
 from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 
 
-def test_filter_by_currency_correct(transactions_for_generators):
+def test_filter_by_currency_correct(transactions_for_generators: list[dict[str, Any]]) -> None:
     generator = filter_by_currency(transactions_for_generators, "USD")
     assert next(generator) == {
         "id": 939719570,
@@ -25,17 +27,17 @@ def test_filter_by_currency_correct(transactions_for_generators):
     }
 
 
-def test_filter_by_not_existing_currency(transactions_for_generators):
+def test_filter_by_not_existing_currency(transactions_for_generators: list[dict[str, Any]]) -> None:
     with pytest.raises(ValueError):
         filter_by_currency(transactions_for_generators, "TRY")
 
 
-def test_filter_by_currency_empty():
+def test_filter_by_currency_empty() -> None:
     with pytest.raises(ValueError):
         filter_by_currency([{}], "USD")
 
 
-def test_transaction_descriptions_correct(transactions_for_generators):
+def test_transaction_descriptions_correct(transactions_for_generators: list[dict[str, Any]]) -> None:
     assert list(transaction_descriptions(transactions_for_generators)) == [
         "Перевод организации",
         "Перевод со счета на счет",
@@ -65,16 +67,16 @@ def test_transaction_descriptions_correct(transactions_for_generators):
         ([{"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"}], None),
     ],
 )
-def test_transaction_descriptions_mistakes(transaction, expected):
+def test_transaction_descriptions_mistakes(transaction: list[dict[str, Any]], expected: None) -> None:
     assert next(transaction_descriptions(transaction)) == expected
 
 
-def test_transaction_descriptions_empty():
+def test_transaction_descriptions_empty() -> None:
     with pytest.raises(StopIteration):
         next(transaction_descriptions([]))
 
 
-def test_card_number_generator_correct():
+def test_card_number_generator_correct() -> None:
     generator = card_number_generator(10000, 10005)
     assert next(generator) == "0000 0000 0001 0000"
     assert next(generator) == "0000 0000 0001 0001"
@@ -84,6 +86,6 @@ def test_card_number_generator_correct():
 
 
 @pytest.mark.parametrize("start_num, stop_num", [(10, 5), (-100, -5), (0, 2)])
-def test_card_number_generator_incorrect(start_num, stop_num):
+def test_card_number_generator_incorrect(start_num: int, stop_num: int) -> None:
     with pytest.raises(ValueError):
         next(card_number_generator(start_num, stop_num))

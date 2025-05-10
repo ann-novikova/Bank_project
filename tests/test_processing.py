@@ -3,7 +3,7 @@ import pytest
 from src.processing import filter_by_state, sort_by_date
 
 
-def test_filter_by_state_correct(list_of_bank_transactions):
+def test_filter_by_state_correct(list_of_bank_transactions: list[dict[str, str | int]]) -> None:
     # Выход функции со статусом по умолчанию 'EXECUTED'
     assert filter_by_state(list_of_bank_transactions) == [
         {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
@@ -17,7 +17,7 @@ def test_filter_by_state_correct(list_of_bank_transactions):
     ]
 
 
-def test_filter_by_state_empty_state(list_of_bank_transactions_empty_state):
+def test_filter_by_state_empty_state(list_of_bank_transactions_empty_state: list[dict[str, str | int]]) -> None:
     assert filter_by_state(list_of_bank_transactions_empty_state) == []
 
 
@@ -35,19 +35,29 @@ def test_filter_by_state_empty_state(list_of_bank_transactions_empty_state):
         ("INACTIVE", []),
     ],
 )
-def test_filter_by_state(state, list_of_bank_transactions_different_state, expected):
+def test_filter_by_state(
+    state: str,
+    list_of_bank_transactions_different_state: list[dict[str, str | int]],
+    expected: list[dict[str, str | int]],
+) -> None:
     assert filter_by_state(list_of_bank_transactions_different_state, state) == expected
 
 
-def test_sort_by_date(list_of_bank_transactions, list_of_bank_transactions_sorted_date):
+def test_sort_by_date(
+    list_of_bank_transactions: list[dict[str, str | int]],
+    list_of_bank_transactions_sorted_date: list[dict[str, str | int]],
+) -> None:
     assert sort_by_date(list_of_bank_transactions) == list_of_bank_transactions_sorted_date
 
 
-def test_sort_by_date_reverse(list_of_bank_transactions, list_of_bank_transactions_sorted_date_false):
+def test_sort_by_date_reverse(
+    list_of_bank_transactions: list[dict[str, str | int]],
+    list_of_bank_transactions_sorted_date_false: list[dict[str, str | int]],
+) -> None:
     assert sort_by_date(list_of_bank_transactions, False) == list_of_bank_transactions_sorted_date_false
 
 
-def test_sort_by_same_date(list_of_bank_transactions_different_state):
+def test_sort_by_same_date(list_of_bank_transactions_different_state: list[dict[str, str | int]]) -> None:
     assert sort_by_date(list_of_bank_transactions_different_state) == [
         {"id": 41428829, "state": "ACTIVE", "date": "2019-07-03T18:35:29.512364"},
         {"id": 7152306, "state": "ACTIVE", "date": "2019-07-03T18:35:29.512365"},
@@ -55,17 +65,17 @@ def test_sort_by_same_date(list_of_bank_transactions_different_state):
     ]
 
 
-def test_sort_date_no_date():
+def test_sort_date_no_date() -> None:
     assert (
         sort_by_date([{"id": 41428829, "state": "ACTIVE"}, {"id": 939719570, "state": "DENIED"}]) == "Отсутствует дата"
     )
 
 
-def test_sort_date_empty():
+def test_sort_date_empty() -> None:
     assert sort_by_date([{}]) == [{}]
 
 
-def test_sort_by_date_incorrect_format():
+def test_sort_by_date_incorrect_format() -> None:
     assert (
         sort_by_date(
             [

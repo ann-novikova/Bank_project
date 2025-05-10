@@ -2,17 +2,17 @@ import pytest
 
 
 @pytest.fixture
-def not_number():
+def not_number() -> str:
     return "hello_world_this_is_not_digit"
 
 
 @pytest.fixture
-def less_than_standart_lenght():
+def less_than_standart_lenght() -> str:
     return "11"
 
 
 @pytest.fixture
-def list_of_bank_transactions():
+def list_of_bank_transactions() -> list[dict[str, str | int]]:
     return [
         {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
         {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
@@ -22,7 +22,7 @@ def list_of_bank_transactions():
 
 
 @pytest.fixture
-def list_of_bank_transactions_sorted_date():
+def list_of_bank_transactions_sorted_date() -> list[dict[str, str | int]]:
     return [
         {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
         {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
@@ -32,7 +32,7 @@ def list_of_bank_transactions_sorted_date():
 
 
 @pytest.fixture
-def list_of_bank_transactions_sorted_date_false():
+def list_of_bank_transactions_sorted_date_false() -> list[dict[str, str | int]]:
     return [
         {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
         {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
@@ -42,7 +42,7 @@ def list_of_bank_transactions_sorted_date_false():
 
 
 @pytest.fixture
-def list_of_bank_transactions_empty_state():
+def list_of_bank_transactions_empty_state() -> list[dict[str, str | int]]:
     return [
         {"id": 41428829, "date": "2019-07-03T18:35:29.512364"},
         {"id": 939719570, "date": "2018-06-30T02:08:58.425572"},
@@ -52,7 +52,7 @@ def list_of_bank_transactions_empty_state():
 
 
 @pytest.fixture
-def list_of_bank_transactions_different_state():
+def list_of_bank_transactions_different_state() -> list[dict[str, str | int]]:
     return [
         {"id": 41428829, "state": "ACTIVE", "date": "2019-07-03T18:35:29.512364"},
         {"id": 939719570, "state": "DENIED", "date": "2018-06-30T02:08:58.425572"},
@@ -61,7 +61,7 @@ def list_of_bank_transactions_different_state():
 
 
 @pytest.fixture
-def transactions_for_generators():
+def transactions_for_generators() -> list[dict[str, str | int | dict[str, str | dict[str, str]]]]:
     return [
         {
             "id": 939719570,

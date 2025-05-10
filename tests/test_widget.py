@@ -10,7 +10,7 @@ from src.widget import get_date, mask_account_card
         ("Счет 73654108430135874305", "Счет **4305"),
     ],
 )
-def test_mask_account_card(account_card_info, expected):
+def test_mask_account_card(account_card_info: str, expected: str) -> None:
     assert mask_account_card(account_card_info) == expected
 
 
@@ -18,19 +18,19 @@ def test_mask_account_card(account_card_info, expected):
     "account_card_info, expected",
     [("Мир 1596837868705199", "Мир 1596 83** **** 5199"), ("счет 646861", "Счет **6861")],
 )
-def test_mask_account_card_not_standart(account_card_info, expected):
+def test_mask_account_card_not_standart(account_card_info: str, expected: str) -> None:
     assert mask_account_card(account_card_info) == expected
 
 
-def test_mask_account_card_empty():
+def test_mask_account_card_empty() -> None:
     assert mask_account_card("") == "Пустой номер"
 
 
-def test_mask_account_card_only_digits():
+def test_mask_account_card_only_digits() -> None:
     assert mask_account_card("7000792289606361") == "7000 79** **** 6361"
 
 
-def test_mask_account_card_number_not_number(not_number):
+def test_mask_account_card_number_not_number(not_number: str) -> None:
     with pytest.raises(ValueError) as exc_info:
         mask_account_card(not_number)
         assert str(exc_info.value) == "Номер должен состоять только из цифр"
@@ -39,15 +39,15 @@ def test_mask_account_card_number_not_number(not_number):
 @pytest.mark.parametrize(
     "date_info, expected", [("2024-03-11T02:26:18.671407", "11.03.2024"), ("2019-07-03T18:35:29.512364", "03.07.2019")]
 )
-def test_get_date(date_info, expected):
+def test_get_date(date_info: str, expected: str) -> None:
     assert get_date(date_info) == expected
 
 
-def test_get_date_another_format(not_number):
+def test_get_date_another_format(not_number: str) -> None:
     with pytest.raises(ValueError):
         get_date(not_number)
 
 
-def test_get_date_empty():
+def test_get_date_empty() -> None:
     with pytest.raises(ValueError):
         get_date("")
