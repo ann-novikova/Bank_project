@@ -10,9 +10,8 @@ def mask_account_card(account_card_info: str) -> str:
     data_list = account_card_info.split()
 
     if data_list[0].title() == "Счет":
-        for item in data_list:
-            if item.isdigit():
-                data_list[-1] = get_mask_account(item)
+        if data_list[-1].isdigit():
+            data_list[-1] = get_mask_account(data_list[-1])
         return " ".join(data_list).title()
     else:
         if data_list[-1].isdigit():
@@ -22,7 +21,7 @@ def mask_account_card(account_card_info: str) -> str:
         return " ".join(data_list).title()
 
 
-def get_date(date_info: str) -> str:
+def get_date(date_info: str) -> str | None:
     """Функция переделывает формат даты в ДД.ММ.ГГГГ"""
 
     date_list = date_info[:10].split("-")[::-1]
@@ -30,7 +29,7 @@ def get_date(date_info: str) -> str:
     for item in date_list:
         if not item.isdigit():
             raise ValueError('Формат даты "%Y-%m-%dT%H:%M:%S')
-    else:
-        if 0 < int(date_list[0]) < 32 and 0 < int(date_list[1]) < 13 and 0 < int(date_list[2]) < 2026:
-            return ".".join(date_list)
+        else:
+            if 0 < int(date_list[0]) < 32 and 0 < int(date_list[1]) < 13 and 0 < int(date_list[2]) < 2026:
+                return ".".join(date_list)
     return ""
