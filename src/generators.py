@@ -23,13 +23,13 @@ def filter_by_currency(transaction_list: list[dict[str, Any]], currency: str) ->
 
 
 def transaction_descriptions(transaction_list: list[dict[str, Any]]) -> Generator[Any | None]:
-    """Функция, которое возвращает описание транзаций"""
+    """Функция, которая возвращает описание транзаций"""
 
     return (transaction.get("description") for transaction in transaction_list)
 
 
 def card_number_generator(start: int, stop: int) -> Generator[str]:
-    """"Функиия, которая генерирует номера карт от 1 до 10000000000000000 в шестнадцати-значном
+    """"Функция, которая генерирует номера карт от 1 до 10000000000000000 в шестнадцати-значном
     формате 'ХХХХ ХХХХ ХХХХ ХХХХ'"""
 
     if 0 < start < 10000000000000000 and start < stop < 10000000000000000:
