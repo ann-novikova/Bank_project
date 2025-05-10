@@ -15,8 +15,9 @@ def filter_by_state(list_of_bank_transactions: list[dict[str, Any]], state: str 
     return executed_transactions
 
 
-def sort_by_date(list_of_bank_transactions: list[dict[str, Any]], reverse: bool = True) \
-        -> Union[list[dict[str, Any]], str]:
+def sort_by_date(
+    list_of_bank_transactions: list[dict[str, Any]], reverse: bool = True
+) -> Union[list[dict[str, Any]], str]:
     """Функция принимает информацию о банковских операциях и сортирует по дате (можно указать порядок
     сортировки - True or False)"""
 
