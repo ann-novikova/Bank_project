@@ -13,14 +13,14 @@ def log(filename: Any = None):
                     with open(filename, 'a', encoding='utf-8') as file:
                         file.write(f"{func.__name__} ok\n")
                 else:
-                    print(f"{func.__name__} ok\n")
+                    print(f"{func.__name__} ok")
                 return result
             except Exception as error:
                 if filename:
                     with open(filename, 'a', encoding='utf-8') as file:
                         file.write(f"{func.__name__} error: {error}. Inputs: {args}, {kwargs}\n")
                 else:
-                    print(f"{func.__name__} error: {error}. Inputs: {args}, {kwargs}\n")
+                    print(f"{func.__name__} error: {error}. Inputs: {args}, {kwargs}")
         return inner
     return wrapper
 
