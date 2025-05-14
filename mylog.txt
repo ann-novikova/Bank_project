@@ -1,0 +1,19 @@
+my_function error: can only concatenate str (not "int") to str. Inputs: ('line', 2), {}
+my_function ok
+my_function error: can only concatenate tuple (not "int") to tuple. Inputs: ((10, 100, 5), 20), {}
+my_function error: can only concatenate str (not "int") to str. Inputs: ('line', 2), {}
+my_function ok
+my_function error: can only concatenate tuple (not "int") to tuple. Inputs: ((10, 100, 5), 20), {}
+my_function error: can only concatenate str (not "int") to str. Inputs: ('line', 2), {}
+my_function ok
+my_function error: can only concatenate tuple (not "int") to tuple. Inputs: ((10, 100, 5), 20), {}
+my_function ok
+my_function error: can only concatenate tuple (not "int") to tuple. Inputs: ((10, 100, 5), 20), {}
+my_function ok
+my_function error: can only concatenate tuple (not "int") to tuple. Inputs: ((10, 100, 5), 20), {}
+my_function ok
+my_function error: can only concatenate tuple (not "int") to tuple. Inputs: ((10, 100, 5), 20), {}
+my_function ok
+my_function error: can only concatenate tuple (not "int") to tuple. Inputs: ((10, 100, 5), 20), {}
+my_function ok
+my_function error: can only concatenate tuple (not "int") to tuple. Inputs: ((10, 100, 5), 20), {}
