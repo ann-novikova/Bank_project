@@ -1,0 +1,2 @@
+my_function ok
+my_function error: can only concatenate str (not "int") to str. Inputs: ('line', 2), {}
