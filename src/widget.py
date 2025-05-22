@@ -21,7 +21,7 @@ def mask_account_card(account_card_info: str) -> str:
         return " ".join(data_list).title()
 
 
-def get_date(date_info: str) -> str | None:
+def get_date(date_info: str) -> str:
     """Функция переделывает формат даты в ДД.ММ.ГГГГ"""
 
     date_list = date_info[:10].split("-")[::-1]
@@ -32,3 +32,4 @@ def get_date(date_info: str) -> str | None:
         else:
             if 0 < int(date_list[0]) < 32 and 0 < int(date_list[1]) < 13 and 0 < int(date_list[2]) < 2026:
                 return ".".join(date_list)
+    return ""

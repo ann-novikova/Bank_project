@@ -110,31 +110,27 @@ def transactions_for_generators() -> list[dict[str, str | int | dict[str, str | 
         },
     ]
 
-@pytest.fixture
-def transaction_for_api():
-    return {
-    "id": 41428829,
-    "state": "EXECUTED",
-    "date": "2019-07-03T18:35:29.512364",
-    "operationAmount": {
-      "amount": "8221.37",
-      "currency": {
-        "name": "USD",
-        "code": "USD"
-      }
-    },
-    "description": "Перевод организации",
-    "from": "MasterCard 7158300734726758",
-    "to": "Счет 35383033474447895560"
-  }
 
 @pytest.fixture
-def transaction_for_api_incorrect():
+def transaction_for_api() -> dict:
     return {
-    "id": 41428829,
-    "state": "EXECUTED",
-    "date": "2019-07-03T18:35:29.512364",
-    "description": "Перевод организации",
-    "from": "MasterCard 7158300734726758",
-    "to": "Счет 35383033474447895560"
-  }
+        "id": 41428829,
+        "state": "EXECUTED",
+        "date": "2019-07-03T18:35:29.512364",
+        "operationAmount": {"amount": "8221.37", "currency": {"name": "USD", "code": "USD"}},
+        "description": "Перевод организации",
+        "from": "MasterCard 7158300734726758",
+        "to": "Счет 35383033474447895560",
+    }
+
+
+@pytest.fixture
+def transaction_for_api_incorrect() -> dict:
+    return {
+        "id": 41428829,
+        "state": "EXECUTED",
+        "date": "2019-07-03T18:35:29.512364",
+        "description": "Перевод организации",
+        "from": "MasterCard 7158300734726758",
+        "to": "Счет 35383033474447895560",
+    }
