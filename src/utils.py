@@ -16,5 +16,7 @@ def convert_file(path_to_file: str) -> list:
 
     return transactions_data
 
+
 if __name__ == "__main__":
     print(convert_file(r'C:\Users\user\PycharmProjects\Bank_project\data\operations.json'))
+
