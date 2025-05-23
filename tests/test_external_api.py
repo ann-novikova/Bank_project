@@ -17,9 +17,10 @@ def test_convert_currency_success(transaction_for_api: dict) -> None:
         "success": True,
     }
 
-    with patch("requests.get", return_value=mock_response):
+    with patch("requests.get", return_value=mock_response) as mock_response:
         result = convert_currency(transaction_for_api)
         assert result == 673924.04078
+        mock_response.assert_called_once()
 
 
 def test_convert_local_currency() -> None:
@@ -43,9 +44,10 @@ def test_convert_currency_no_currency(transaction_for_api: dict) -> None:
     mock_response = Mock()
     mock_response.status_code = 500
 
-    with patch("requests.get", return_value=mock_response):
+    with patch("requests.get", return_value=mock_response) as mock_response:
         with pytest.raises(ValueError, match="Failed to get currency rate"):
             convert_currency(transaction_for_api)
+            mock_response.assert_called_once()
 
 
 @pytest.mark.parametrize(
