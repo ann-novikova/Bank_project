@@ -51,3 +51,7 @@ def test_get_date_another_format(not_number: str) -> None:
 def test_get_date_empty() -> None:
     with pytest.raises(ValueError):
         get_date("")
+
+
+def test_get_date_incorrect_date() -> None:
+    assert get_date("2024-29-55T02:26:18.671407") == ""
