@@ -112,6 +112,16 @@ def transactions_for_generators() -> list[dict[str, str | int | dict[str, str | 
 
 
 @pytest.fixture
+def correct_path() -> str:
+    return r"C:\Users\user\PycharmProjects\Bank_project\data\operations.json"
+
+
+@pytest.fixture
+def incorrect_json() -> str:
+    return "{'transaction': '123', 'date': '23.05.2025', 'amount': 100}"
+
+
+@pytest.fixture
 def transaction_for_api() -> dict:
     return {
         "id": 41428829,
