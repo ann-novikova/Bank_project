@@ -1,5 +1,6 @@
 from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 from src.processing import filter_by_state, sort_by_date
+from src.utils import convert_file
 from src.widget import get_date, mask_account_card
 
 if __name__ == "__main__":
@@ -78,3 +79,5 @@ if __name__ == "__main__":
 
     for card_number in card_number_generator(1, 5):
         print(card_number)
+
+print(convert_file(r"C:\Users\user\PycharmProjects\Bank_project\data\operations.json"))
