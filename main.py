@@ -2,8 +2,53 @@ from src.generators import card_number_generator, filter_by_currency, transactio
 from src.processing import filter_by_state, sort_by_date
 from src.utils import convert_file
 from src.widget import get_date, mask_account_card
+import os
+from src.read_files import read_csv_file, read_excel_file
+
+path_to_files = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
+
 
 if __name__ == "__main__":
+    menu = [
+        'JSON-файл',
+        'CSV-файл',
+        'XLSX-фай'
+    ]
+    print(f'''Привет! Добро пожаловать в программу работы 
+с банковскими транзакциями. 
+Выберите необходимый пункт меню:
+1. Получить информацию о транзакциях из JSON-файла
+2. Получить информацию о транзакциях из CSV-файла
+3. Получить информацию о транзакциях из XLSX-файла
+''')
+    user_input = int(input())
+    print(f'Для обработки выбран {menu[user_input-1]}')
+
+
+    def select_category(user_selection):
+        while True:
+            if user_selection == 1:
+                data = convert_file(os.path.join(path_to_files, 'operations.json'))
+                return data
+            elif user_selection == 2:
+                data = read_csv_file(os.path.join(path_to_files, 'transactions.csv'))
+                return data
+            elif user_selection == 3:
+                data = read_excel_file(os.path.join(path_to_files, 'transactions_excel.xlsx'))
+                return data
+            else:
+                'Введен некорректный пункт меню'
+
+    transactions = select_category(user_input)
+
+
+    user_choose_category = input('''Введите статус, по которому необходимо выполнить фильтрацию. 
+Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING\n''').lower()
+
+    filter_by_state(transactions, user_choose_category)
+
+
+
     user_finance_info = "Visa Platinum 7000792289606361"
     print(mask_account_card(user_finance_info))
 
