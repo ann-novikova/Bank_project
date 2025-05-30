@@ -59,5 +59,5 @@ def test_search_string(transactions_for_generators: list[dict], search_word: str
         ([], {}),
     ],
 )
-def test_count_by_category(transactions_for_generators, list_category, expected) -> None:
+def test_count_by_category(transactions_for_generators: list[dict], list_category: list, expected: dict) -> None:
     assert count_by_category(transactions_for_generators, list_category) == expected

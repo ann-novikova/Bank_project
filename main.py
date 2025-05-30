@@ -11,10 +11,12 @@ path_to_files = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 
 def select_category() -> list[dict]:
+    """Функция для выбора файла и чтения данных об операциях"""
     while True:
         menu = ["JSON-файл", "CSV-файл", "XLSX-фай"]
         print(
-            f"""Привет! Добро пожаловать в программу работы с банковскими транзакциями. 
+            """
+            Привет! Добро пожаловать в программу работы с банковскими транзакциями.
             Выберите необходимый пункт меню:
             1. Получить информацию о транзакциях из JSON-файла
             2. Получить информацию о транзакциях из CSV-файла
@@ -36,11 +38,12 @@ def select_category() -> list[dict]:
             print("Введен некорректный пункт меню")
 
 
-def choose_category_filter(list_of_transactions: list[dict]) -> list[dict] | None:
+def choose_category_filter(list_of_transactions: list[dict]) -> list[dict]:
+    """Функция для выбора фильтрации по статусу"""
     available_status = ["executed", "canceled", "pending"]
     while True:
         user_choose_category = input(
-            """Введите статус, по которому необходимо выполнить фильтрацию. 
+            """Введите статус, по которому необходимо выполнить фильтрацию.
             Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING\n"""
         ).lower()
         if user_choose_category in available_status:
@@ -52,9 +55,11 @@ def choose_category_filter(list_of_transactions: list[dict]) -> list[dict] | Non
         else:
             print(f"Статус операции {user_choose_category} недоступен")
             continue
+    return [{}]
 
 
-def choose_params_for_date(list_of_transactions: list[dict]) -> list[dict] | None:
+def choose_params_for_date(list_of_transactions: list[dict]) -> list[dict]:
+    """Функция для выбора сортировки даты"""
     while True:
         sort_input = input("Отсортировать операции по дате? Да/Нет\n").lower()
         if sort_input == "нет":
@@ -70,9 +75,11 @@ def choose_params_for_date(list_of_transactions: list[dict]) -> list[dict] | Non
                     print("Введите пожалуйста корректное значение")
         else:
             print("Введите пожалуйста корректное значение")
+        return [{}]
 
 
 def choose_rub(list_of_transactions: list[dict]) -> list[dict]:
+    """Функция для выбора вывода всех операций или только рублевых операций"""
     while True:
         user_rub_input = input("Выводить только рублевые транзакции? Да/Нет\n").lower()
         if user_rub_input == "нет":
@@ -84,9 +91,11 @@ def choose_rub(list_of_transactions: list[dict]) -> list[dict]:
                 print("Операции по данной валюте отсутствуют")
         else:
             print("Введите пожалуйста корректное значение")
+        return [{}]
 
 
 def choose_search(list_of_transactions: list[dict]) -> list[dict]:
+    """Функция для выбора фильтрации по слову"""
     while True:
         user_search_input = input(
             "Отфильтровать список транзакций по определенному слову в описании? Да/Нет\n"
@@ -98,14 +107,15 @@ def choose_search(list_of_transactions: list[dict]) -> list[dict]:
             return search_string(list_of_transactions, user_word)
         else:
             print("Введите пожалуйста корректное значение")
+        return [{}]
 
 
 def main() -> None:
+    """Функция, описывающая главную логику работы приложения"""
+
     transactions = select_category()
     filtered_transaction = choose_category_filter(transactions)
-    print(filtered_transaction)
     transactions_sorted = choose_params_for_date(filtered_transaction)
-    print(transactions_sorted)
     transactions_rub_sorted = choose_rub(transactions_sorted)
     final_result = choose_search(transactions_rub_sorted)
 
@@ -115,8 +125,8 @@ def main() -> None:
     for transaction in final_result:
         date = get_date(transaction["date"])
         amount = transaction["amount"] if "amount" in transaction else transaction["operationAmount"]["amount"]
-        from_transaction = mask_account_card(transaction.get("from"))
-        to_transaction = mask_account_card(transaction.get("to"))
+        from_transaction = mask_account_card(transaction.get("from", ""))
+        to_transaction = mask_account_card(transaction.get("to", ""))
         description = transaction["description"]
         currency_code = (
             transaction["currency_code"]
