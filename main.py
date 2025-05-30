@@ -1,9 +1,10 @@
 from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 from src.processing import filter_by_state, sort_by_date
 from src.utils import convert_file
-from src.widget import get_date, mask_account_card
 import os
+from src.widget import get_date, mask_account_card
 from src.read_files import read_csv_file, read_excel_file
+from src.search import search_string
 
 path_to_files = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 
@@ -14,115 +15,108 @@ if __name__ == "__main__":
         'CSV-файл',
         'XLSX-фай'
     ]
-    print(f'''Привет! Добро пожаловать в программу работы 
-с банковскими транзакциями. 
-Выберите необходимый пункт меню:
-1. Получить информацию о транзакциях из JSON-файла
-2. Получить информацию о транзакциях из CSV-файла
-3. Получить информацию о транзакциях из XLSX-файла
-''')
-    user_input = int(input())
-    print(f'Для обработки выбран {menu[user_input-1]}')
 
-
-    def select_category(user_selection):
+    def select_category() -> list[dict]:
         while True:
-            if user_selection == 1:
+            print(f'''Привет! Добро пожаловать в программу работы с банковскими транзакциями. 
+            Выберите необходимый пункт меню:
+            1. Получить информацию о транзакциях из JSON-файла
+            2. Получить информацию о транзакциях из CSV-файла
+            3. Получить информацию о транзакциях из XLSX-файла\n
+            ''')
+            user_input = int(input())
+            print(f'Для обработки выбран {menu[user_input - 1]}')
+            if user_input == 1:
                 data = convert_file(os.path.join(path_to_files, 'operations.json'))
                 return data
-            elif user_selection == 2:
+            elif user_input == 2:
                 data = read_csv_file(os.path.join(path_to_files, 'transactions.csv'))
                 return data
-            elif user_selection == 3:
+            elif user_input == 3:
                 data = read_excel_file(os.path.join(path_to_files, 'transactions_excel.xlsx'))
                 return data
             else:
-                'Введен некорректный пункт меню'
+                print('Введен некорректный пункт меню')
 
-    transactions = select_category(user_input)
+    transactions = select_category()
+    print(transactions)
+
+    def choose_category_filter(transaction: list[dict]) -> list[dict] | None:
+        available_status = ['executed', 'canceled', 'pending']
+        while True:
+            user_choose_category = input('''Введите статус, по которому необходимо выполнить фильтрацию. 
+            Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING\n''').lower()
+            if user_choose_category in available_status:
+                return filter_by_state(transaction, user_choose_category.upper())
+            else:
+                print(f'Статус операции {user_choose_category} недоступен')
+                continue
+
+    filtered_transaction = choose_category_filter(transactions)
+    print(filtered_transaction)
+
+    def choose_params_for_date(transaction: list[dict]) -> list[dict] | None:
+        while True:
+            sort_input = input('Отсортировать операции по дате? Да/Нет\n').lower()
+            if sort_input == 'нет':
+                return transaction
+            elif sort_input == 'да':
+                while True:
+                    order = input('Отсортировать по возрастанию или по убыванию? в/у\n').lower()
+                    if order == 'в':
+                        return sort_by_date(transaction, False)
+                    elif order == 'у':
+                        return sort_by_date(transaction, True)
+                    else:
+                        print('Введите пожалуйста корректное значение')
+                        continue
+            else:
+                print('Введите пожалуйста корректное значение')
+
+    transactions_sorted = choose_params_for_date(filtered_transaction)
+
+    def choose_rub(transactions_list_sorted: list[dict]) -> list[dict]:
+        while True:
+            user_rub_input = input('Выводить только рублевые транзакции? Да/Нет\n').lower()
+            if user_rub_input == 'нет':
+                return transactions_list_sorted
+            elif user_rub_input == 'да':
+                try:
+                    return list(filter_by_currency(transactions_list_sorted, 'RUB'))
+                except ValueError:
+                    print('Операции по данной валюте отсутствуют')
+            else:
+                print('Введите пожалуйста корректное значение')
 
 
-    user_choose_category = input('''Введите статус, по которому необходимо выполнить фильтрацию. 
-Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING\n''').lower()
+    transactions_rub_sorted = choose_rub(transactions_sorted)
 
-    filter_by_state(transactions, user_choose_category)
+    def choose_search(operations_list) -> list[dict]:
+        while True:
+            user_search_input = (
+                input('Отфильтровать список транзакций по определенному слову в описании? Да/Нет\n').lower())
+            if user_search_input == 'нет':
+                return operations_list
+            elif user_search_input == 'да':
+                user_word = input('Введите пожалуйста слово в описании операции для поиска\n').lower()
+                return search_string(operations_list, user_word)
+            else:
+                print('Введите пожалуйста корректное значение')
 
+    final_result = choose_search(transactions_rub_sorted)
 
+    print('Программа: Распечатываю итоговый список транзакций...')
+    print(f'Всего банковских операций в выборке: {len(final_result)}')
 
-    user_finance_info = "Visa Platinum 7000792289606361"
-    print(mask_account_card(user_finance_info))
-
-    date = "2024-03-11T02:26:18.671407"
-    print(get_date(date))
-
-    transaction_for_generators = [
-        {
-            "id": 939719570,
-            "state": "EXECUTED",
-            "date": "2018-06-30T02:08:58.425572",
-            "operationAmount": {"amount": "9824.07", "currency": {"name": "USD", "code": "USD"}},
-            "description": "Перевод организации",
-            "from": "Счет 75106830613657916952",
-            "to": "Счет 11776614605963066702",
-        },
-        {
-            "id": 142264268,
-            "state": "EXECUTED",
-            "date": "2019-04-04T23:20:05.206878",
-            "operationAmount": {"amount": "79114.93", "currency": {"name": "USD", "code": "USD"}},
-            "description": "Перевод со счета на счет",
-            "from": "Счет 19708645243227258542",
-            "to": "Счет 75651667383060284188",
-        },
-        {
-            "id": 873106923,
-            "state": "EXECUTED",
-            "date": "2019-03-23T01:09:46.296404",
-            "operationAmount": {"amount": "43318.34", "currency": {"name": "руб.", "code": "RUB"}},
-            "description": "Перевод со счета на счет",
-            "from": "Счет 44812258784861134719",
-            "to": "Счет 74489636417521191160",
-        },
-        {
-            "id": 895315941,
-            "state": "EXECUTED",
-            "date": "2018-08-19T04:27:37.904916",
-            "operationAmount": {"amount": "56883.54", "currency": {"name": "USD", "code": "USD"}},
-            "description": "Перевод с карты на карту",
-            "from": "Visa Classic 6831982476737658",
-            "to": "Visa Platinum 8990922113665229",
-        },
-        {
-            "id": 594226727,
-            "state": "CANCELED",
-            "date": "2018-09-12T21:27:25.241689",
-            "operationAmount": {"amount": "67314.70", "currency": {"name": "руб.", "code": "RUB"}},
-            "description": "Перевод организации",
-            "from": "Visa Platinum 1246377376343588",
-            "to": "Счет 14211924144426031657",
-        },
-    ]
-
-    bank_transactions = [
-        {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-        {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-        {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-        {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
-    ]
-
-    print(filter_by_state(bank_transactions))
-
-    print(sort_by_date(bank_transactions))
-
-    usd_transactions = filter_by_currency(transaction_for_generators, "USD")
-    for _ in range(2):
-        print(next(usd_transactions))
-
-    descriptions = transaction_descriptions(transaction_for_generators)
-    for _ in range(5):
-        print(next(descriptions))
-
-    for card_number in card_number_generator(1, 5):
-        print(card_number)
-
-print(convert_file(r"C:\Users\user\PycharmProjects\Bank_project\data\operations.json"))
+    for transaction in final_result:
+        date = get_date(transaction['date'])
+        amount = transaction["amount"] if "amount" in transaction else transaction["operationAmount"]["amount"]
+        from_transaction = mask_account_card(transaction.get("from"))
+        to_transaction = mask_account_card(transaction.get("to"))
+        description = transaction["description"]
+        currency_code = (
+            transaction["currency_code"]
+            if "currency_code" in transaction
+            else transaction["operationAmount"]["currency"]["name"]
+        )
+        print(f'{date} {description}\n{from_transaction} -> {to_transaction}\nСумма: {amount} {currency_code}\n\n')
