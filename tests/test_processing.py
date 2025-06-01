@@ -66,9 +66,7 @@ def test_sort_by_same_date(list_of_bank_transactions_different_state: list[dict[
 
 
 def test_sort_date_no_date() -> None:
-    assert (
-        sort_by_date([{"id": 41428829, "state": "ACTIVE"}, {"id": 939719570, "state": "DENIED"}]) == "Отсутствует дата"
-    )
+    assert sort_by_date([{"id": 41428829, "state": "ACTIVE"}, {"id": 939719570, "state": "DENIED"}]) == [{}]
 
 
 def test_sort_date_empty() -> None:
@@ -76,12 +74,9 @@ def test_sort_date_empty() -> None:
 
 
 def test_sort_by_date_incorrect_format() -> None:
-    assert (
-        sort_by_date(
-            [
-                {"id": 41428829, "state": "ACTIVE", "date": "2019/07/03T18:35:29.512364"},
-                {"id": 939719570, "state": "DENIED", "date": "2018/06/30T02:08:58.425572"},
-            ]
-        )
-        == "Отсутствует дата"
-    )
+    assert sort_by_date(
+        [
+            {"id": 41428829, "state": "ACTIVE", "date": "2019/07/03T18:35:29.512364"},
+            {"id": 939719570, "state": "DENIED", "date": "2018/06/30T02:08:58.425572"},
+        ]
+    ) == [{}]
